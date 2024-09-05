@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <title>WordGuard</title>
+    </head>
+    <body>
+        <h1>WordGuard</h1>
+
+        <h3>메시지 입력</h3>
+        <textarea id="message" style="width: 500px; height: 200px;"></textarea>
+
+        <h3>콘텐츠 선택</h3>
+        <input type="radio" name="type" value="비속어" checked="checked">비속어
+        <input type="radio" name="type" value="유해사이트">유해사이트
+        <input type="radio" name="type" value="비속어 또는 유해사이트">비속어 또는 유해사이트
+
+        <br/><br/>
+        <button id="button">결과 보기</button>
+
+        <h3>결과</h3>
+        <textarea id="result" style="width: 500px; height: 200px;"></textarea>
+
+        <script>
+            const $message = document.getElementById("message");
+            const $type = document.getElementsByName("type");
+            const $button = document.getElementById("button");
+            const $result = document.getElementById("result");
+
+            $button.addEventListener("click", async function () {
+                const message = $message.value;
+                const type = Array.from($type).filter(type => type.checked)[0].value;
+                await fetch("http://localhost/detect", {
+                    "method": "post",
+                    "headers": {
+                        "Content-Type": "application/json"
+                    },
+                    body: JSON.stringify({message, type})
+                })
+                .then(response => response.text())
+                .then(data => {
+                    $result.value = data;
+                });
+            })
+        </script>
+    </body>
+</html>

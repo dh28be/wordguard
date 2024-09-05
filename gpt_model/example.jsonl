@@ -1,0 +1,11 @@
+{"prompt": "시@발년아\n\n이 문장에 비속어가 있는지 판별해줘", "completion": " 포함됨"}
+{"prompt": "니애미\n\n이 문장에 비속어가 있는지 판별해줘", "completion": " 포함됨"}
+{"prompt": "창녀\n\n이 문장에 비속어가 있는지 판별해줘", "completion": " 포함됨"}
+{"prompt": "니엄마 죽여버린다\n\n이 문장에 비속어가 있는지 판별해줘", "completion": " 포함됨"}
+{"prompt": "니엄마 너무 아름다우셔\n\n이 문장에 비속어가 있는지 판별해줘", "completion": " 포함되지 않음"}
+{"prompt": "{message}\n\n이 문장에 비속어가 있는지 판별해줘", "completion": " 포함됨"}
+{"prompt": "{message}\n\n이 문장에 비속어가 있는지 판별해줘", "completion": " 포함됨"}
+{"prompt": "{message}\n\n이 문장에 비속어가 있는지 판별해줘", "completion": " 포함됨"}
+{"prompt": "이 문장은 비속어가 포함되어 있나요? '오늘 정말 좋은 날이네요.'\n\n###", "completion": " 포함되지 않음"}
+{"prompt": "이 문장은 비속어가 포함되어 있나요? '이런 바보 같은 상황이 어디 있어!'\n\n###", "completion": " 포함됨"}
+{"prompt": "이 문장은 비속어가 포함되어 있나요? '안녕하세요, 잘 지내시나요?'\n\n###", "completion": " 포함되지 않음"}
