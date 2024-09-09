@@ -1,0 +1,28 @@
+{% extends 'base.html' %}
+
+{% block head %}
+<title>Login Page</title>
+{% endblock %}
+
+{% block body %}
+<form action="/login/" method="POST">
+    <div class="alignLeft">
+        <h1 class="coolAnimation">Login</h1>
+        <label for="username">Username: </label>
+        <input class="inputBox" type="text" name="username">
+        <!--
+        
+        
+        <br>
+        <label for="password">Password: </label>
+        <input class="inputBox" type="text" name="password">
+        <br>
+        -->
+        <input class="button" type="submit" value="Login">
+        <!--<a class="button1" href="/register/">Register</a>-->
+    </div>
+</form>
+<br>
+<br>
+<!-- iterate through DB using jinja templates and display the blogTitle and blogAuthors if any on the index page -->
+{% endblock %}
