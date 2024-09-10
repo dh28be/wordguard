@@ -13,7 +13,7 @@ from dotenv import load_dotenv
 load_dotenv()
 
 app = Flask(__name__)
-socketio = SocketIO(app, cors_allowed_origin="*")
+socketio = SocketIO(app, cors_allowed_origins="*")
 app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///./app.db' 
 app.config['SQLALCHEMY_BINDS'] = {'chat': 'sqlite:///./chat.db'} 
 db = SQLAlchemy(app)
