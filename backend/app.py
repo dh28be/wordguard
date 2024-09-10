@@ -50,25 +50,15 @@ def login_controller():
                 return redirect(url_for("profile", username=user_username))
             except Exception as e:
                 print(e)
-                return render_template("loginPage.html")
+                return render_template("index.html")
     else:
-        return render_template("loginPage.html")
+        return render_template("index.html")
 
 @app.route("/profile/<username>")
 def profile(username=None):
     chats = chatInfo.query.order_by(chatInfo.date_created.desc()).all()
     user = userChatter.query.filter_by(username=username).first()
-    return render_template('chat_page.html', user=user, chats=chats)
-
-@app.route("/logout/")
-def unlogger():
-	# if logged in, log out, otherwise offer to log in
-	if "username" in session:
-		# note, here were calling the .clear() method for the python dictionary builtin
-		session.clear()
-		return render_template("logoutPage.html")
-	else:
-		return redirect(url_for("login_controller"))
+    return render_template('chat.html', user=user, chats=chats)
 
 @app.route("/new_message/", methods=["POST"])
 def new_message(): 
