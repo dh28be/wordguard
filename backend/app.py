@@ -5,6 +5,7 @@ from datetime import datetime
 from dataclasses import dataclass
 import json
 from flask_socketio import SocketIO
+from flask_cors import CORS
 
 import os
 from openai import OpenAI
@@ -13,6 +14,7 @@ from dotenv import load_dotenv
 load_dotenv()
 
 app = Flask(__name__)
+CORS(app)
 socketio = SocketIO(app, cors_allowed_origins="*")
 app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///./app.db' 
 app.config['SQLALCHEMY_BINDS'] = {'chat': 'sqlite:///./chat.db'} 
