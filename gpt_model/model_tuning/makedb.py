@@ -39,11 +39,11 @@ with open("gpt_model/model_tuning/dataset.jsonl", "w", encoding="utf-8") as f:
                 },
                 {
                     "role": "user",
-                    "content": f"{offensive_sentence}\n이 문장에서 비속어 또는 유해사이트가 포함되어 있다면 그 부분을 마스킹해줘."
+                    "content": f"{offensive_sentence}"
                 },
                 {
                     "role": "assistant",
-                    "content": f"{offensive_mask_sentence}"
+                    "content": "1"
                 }
             ]
         }
@@ -58,11 +58,11 @@ with open("gpt_model/model_tuning/dataset.jsonl", "w", encoding="utf-8") as f:
                 },
                 {
                     "role": "user",
-                    "content": f"{normal_sentence}\n이 문장에서 비속어 또는 유해사이트가 포함되어 있다면 그 부분을 마스킹해줘."
+                    "content": f"{normal_sentence}"
                 },
                 {
                     "role": "assistant",
-                    "content": f"{normal_sentence}"
+                    "content": "3"
                 }
             ]
         }
@@ -82,11 +82,11 @@ with open("gpt_model/model_tuning/dataset.jsonl", "w", encoding="utf-8") as f:
                 },
                 {
                     "role": "user",
-                    "content": f"{illegal_site_sentence}\n이 문장에서 비속어 또는 유해사이트가 포함되어 있다면 그 부분을 마스킹해줘."
+                    "content": f"{illegal_site_sentence}"
                 },
                 {
                     "role": "assistant",
-                    "content": f"{illegal_mask_site_sentence}"
+                    "content": "2"
                 }
             ]
         }
@@ -102,11 +102,11 @@ with open("gpt_model/model_tuning/dataset.jsonl", "w", encoding="utf-8") as f:
                 },
                 {
                     "role": "user",
-                    "content": f"{normal_site_sentence}\n이 문장에서 비속어 또는 유해사이트가 포함되어 있다면 그 부분을 마스킹해줘."
+                    "content": f"{normal_site_sentence}"
                 },
                 {
                     "role": "assistant",
-                    "content": f"{normal_site_sentence}"
+                    "content": "3"
                 }
             ]
         }
@@ -148,7 +148,7 @@ with open("gpt_model/model_tuning/dataset.jsonl", "w", encoding="utf-8") as f:
                     },
                     {
                         "role": "assistant",
-                        "content": f"{answer}"
+                        "content": f"{j}"
                     }
                 ]
             }
