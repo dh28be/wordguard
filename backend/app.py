@@ -24,8 +24,10 @@ class chatInfo(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     message =  db.Column(db.String(150), nullable=False)
     date_created = db.Column(db.DateTime, default=datetime.utcnow)
-    author  = db.Column(db.String(100), nullable=False)
+    author  = db.Column(db.String(80), nullable=False)
     __bind_key__ = 'chat' 
+
+
 
 @app.route("/", methods=["GET", "POST"])
 def default():
@@ -37,7 +39,6 @@ def login_controller():
     if request.method == "POST":
         user_username = request.form['username']
         if userChatter.query.filter_by(username=user_username).first() is not None:
-            print(userChatter.query.filter_by(username=user_username).first())
             user = userChatter.query.filter_by(username=user_username).first()
             return redirect(url_for("profile", username=user_username))
         else:
@@ -99,4 +100,4 @@ if __name__ == "__main__":
     with app.app_context():
         db.create_all()
     app.secret_key = "super secret key"
-    app.run(debug=True)
+    app.run(host='0.0.0.0', port=80, debug=True)
