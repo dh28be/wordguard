@@ -5,10 +5,15 @@ from datetime import datetime
 from dataclasses import dataclass
 import json
 
+import os
+from openai import OpenAI
+from dotenv import load_dotenv
+
 app = Flask(__name__)
-app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///app.db' 
-app.config['SQLALCHEMY_BINDS'] = {'chat': 'sqlite:///chat.db'} 
+app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///./app.db' 
+app.config['SQLALCHEMY_BINDS'] = {'chat': 'sqlite:///./chat.db'} 
 db = SQLAlchemy(app)
+
 
 class userChatter(db.Model):
     id = db.Column(db.Integer, primary_key=True)
@@ -19,7 +24,7 @@ class chatInfo(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     message =  db.Column(db.String(150), nullable=False)
     date_created = db.Column(db.DateTime, default=datetime.utcnow)
-    author  = db.Column(db.String(80), nullable=False)
+    author  = db.Column(db.String(100), nullable=False)
     __bind_key__ = 'chat' 
 
 @app.route("/", methods=["GET", "POST"])
@@ -31,15 +36,20 @@ def default():
 def login_controller():
     if request.method == "POST":
         user_username = request.form['username']
-        try:
-            """new_user = userChatter(username=user_username)
-            db.session.add(new_user)
-            db.session.commit()"""
-            #user = userChatter.query.filter_by(username=user_username).first()
+        if userChatter.query.filter_by(username=user_username).first() is not None:
+            print(userChatter.query.filter_by(username=user_username).first())
+            user = userChatter.query.filter_by(username=user_username).first()
             return redirect(url_for("profile", username=user_username))
-        except Exception as e:
-            print(e)
-            return "There was an issue adding your profile"
+        else:
+            try:
+                new_user = userChatter(username=user_username)
+                db.session.add(new_user)
+                db.session.commit()
+                
+                return redirect(url_for("profile", username=user_username))
+            except Exception as e:
+                print(e)
+                return render_template("loginPage.html")
     else:
         return render_template("loginPage.html")
 
@@ -73,7 +83,7 @@ def new_message():
 	except Exception as e:
 		print(e)
 		return 'There was an error adding your chat message'
- 
+
 @app.route("/messages/") 
 def messages():
 	all_chats = chatInfo.query.order_by(chatInfo.date_created.desc()).all()
