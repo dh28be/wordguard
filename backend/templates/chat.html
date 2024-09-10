@@ -173,8 +173,7 @@
 
     <!-- 자바스크립트 코드 시작 -->
     <script>
-        var socket = io.connect('https://'' + document.domain + ':' + location.port');
-        console.log('socket = ' + 'https://'' + document.domain + ':' + location.port')
+        var socket = io.connect('https://' + document.domain + ':' + location.port);
 
         const messages_box = document.getElementById('messages_box');  /* 메시지를 표시할 요소 선택 */
         const chatInput = document.getElementById('chatInput');  /* 입력 필드 선택 */
