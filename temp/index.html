@@ -103,7 +103,7 @@
         // // }
 
         /* 엔터 키를 눌렀을 때 버튼이 클릭된 것처럼 동작하는 이벤트 리스너 추가 */
-        document.getElementById('username').addEventListener('keydown', function(event) {
+        document.getElementById('username').addEventListener('keyup', function(event) {
             if (event.key === 'Enter') {  /* 키보드의 Enter 키가 눌렸을 때 */
                 event.preventDefault();  /* 기본 동작을 막음 */
                 document.getElementById('enterButton').click();  /* Enter 버튼 클릭 동작을 호출 */
