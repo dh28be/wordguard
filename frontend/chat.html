@@ -1,12 +1,12 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="ko">
 <head>
     <!-- 문서가 UTF-8 인코딩을 사용하도록 설정 -->
     <meta charset="UTF-8">
     <!-- 화면 크기에 맞추어 적절하게 페이지가 표시되도록 설정 -->
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <!-- 브라우저 탭에 표시될 제목 설정 -->
-    <title>Chat Room - Dark Mode</title>
+    <title>Chat Room! - Dark Mode</title>
 
     <!-- CSS 스타일을 추가하는 곳 -->
     <style>
@@ -25,46 +25,81 @@
 
         /* 상단 헤더 스타일 */
         header {
-            position: absolute;
+            position: absolute;  /* 화면에서 고정 위치로 설정 */
             top: 20px;  /* 페이지 맨 위에서 20px 내려서 위치 */
-            text-align: center;
+            text-align: center;  /* 텍스트 중앙 정렬 */
         }
 
-        /* 채팅 창 컨테이너의 스타일을 설정 */
+        /* Chat Room 제목 스타일 추가 */
+        .chat-title {
+            text-align: center;
+            margin-bottom: 10px;  /* 메시지 목록과의 간격 설정 */
+            font-size: 1.5rem;  /* 제목 크기 설정 */
+            color: #FFFFFF;
+        }
+
+        /* .chat-container에서 스크롤 가능한 영역 설정 */
         .chat-container {
             display: flex;
-            flex-direction: column;  /* 요소들을 세로로 나열 */
-            justify-content: center;  /* 수직 중앙 정렬 */
-            align-items: center;  /* 수평 중앙 정렬 */
-            width: 90%;  /* 너비를 90%로 설정 */
-            max-width: 600px;  /* 최대 너비를 600px로 제한 */
-            background-color: #1E1E1E;  /* 채팅 창의 배경색 설정 */
-            padding: 20px;  /* 안쪽 여백 설정 */
-            border-radius: 10px;  /* 모서리를 둥글게 설정 */
-            box-shadow: 0 0 20px rgba(0, 0, 0, 0.5);  /* 그림자 효과 */
-            overflow-y: auto;  /* 세로 스크롤 가능하게 설정 */
-            max-height: 70vh;  /* 최대 높이를 화면의 70%로 제한 */
-            opacity: 0;  /* 처음에 투명하게 설정 */
-            animation: fadeIn 2s forwards;  /* 2초 동안 fadeIn 애니메이션 실행 */
+            flex-direction: column;
+            justify-content: flex-end;
+            align-items: center;
+            width: 90%;
+            max-width: 600px;
+            background-color: #1E1E1E;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 0 20px rgba(0, 0, 0, 0.5);
+            overflow-y: hidden;  /* 채팅창 전체에서 스크롤을 숨김 */
+            max-height: 70vh;
+            position: relative;
         }
 
-        /* 메시지 목록의 스타일을 설정 */
         #messages {
-            list-style: none;  /* 목록 아이콘 없애기 */
-            padding: 0;  /* 기본 여백 없애기 */
+            list-style: none;
+            padding: 0;
+            width: 100%;
+            display: flex;
+            flex-direction: column;
+            /* overflow-y: auto;  메시지 목록만 스크롤 가능 */
+            max-height: calc(70vh - 100px);  /* Chat Room 제목 높이를 제외한 공간 설정 */
+            word-wrap: break-word;  /* 긴 텍스트가 있을 때 줄바꿈 */
         }
 
         /* 각각의 메시지 스타일을 설정 */
         #messages li {
             padding: 10px;  /* 메시지에 여백 추가 */
-            margin: 10px 0;  /* 메시지 간의 여백 추가 */
-            border-bottom: 1px solid #333;  /* 메시지 아래에 구분선 추가 */
-            animation: slideIn 0.5s ease-out;  /* 메시지가 나타날 때 애니메이션 적용 */
+            /* margin: 10px;  메시지 간의 여백 추가 */ /*원인은 모르겠으나 이 코드가 채팅 박스가 왼쪽으로 길어지는 원인이어서 주석 처리하였음*/
+            margin-top: 5px;
+            border-radius: 10px;  /* 메시지의 모서리를 둥글게 설정 */
+            display: inline-block;  /* 메시지를 인라인 블록으로 설정 */
+            width: auto;  /* 메시지의 너비를 글자에 맞추어 자동으로 설정 */
+            max-width: 80%;  /* 너무 길어지는 메시지의 최대 너비 설정 */
+            animation: slideIn 0.5s ease-out, fadeOut 2s 20s forwards;  /* 슬라이드인, 페이드아웃 애니메이션 적용 */
+        }
+
+
+        /* 내 메시지(오른쪽 정렬) 스타일 */
+        .my-message {
+            background-color: #FF5722;  /* 내 메시지 배경색 오렌지로 설정 */
+            color: white;  /* 텍스트 색상을 흰색으로 설정 */
+            margin-left: auto;  /* 왼쪽 여백 자동으로 설정해 오른쪽 정렬 */
+            text-align: right;  /* 텍스트 오른쪽 정렬 */
+            width: auto;  /* 메시지의 너비를 글자에 맞게 조정 */
+        }
+
+        /* 상대방 메시지(왼쪽 정렬) 스타일 */
+        .other-message {
+            background-color: #333;  /* 상대방 메시지 배경색 어두운 회색으로 설정 */
+            color: white;  /* 텍스트 색상을 흰색으로 설정 */
+            margin-right: auto;  /* 오른쪽 여백 자동으로 설정해 왼쪽 정렬 */
+            text-align: left;  /* 텍스트 왼쪽 정렬 */
+            width: auto;  /* 메시지의 너비를 글자에 맞게 조정 */
         }
 
         /* 입력 필드와 버튼의 기본 스타일을 설정 */
         #chatInput, #sendButton {
-            width: 80%;  /* 너비를 100%로 설정 */
+            width: 80%;  /* 너비를 80%로 설정 */
             padding: 15px;  /* 내부 여백 설정 */
             margin-top: 10px;  /* 위쪽 여백 설정 */
             border-radius: 5px;  /* 모서리를 둥글게 설정 */
@@ -103,6 +138,14 @@
                 opacity: 1;  /* 투명도 100%로 변경 */
             }
         }
+
+        /* 메시지가 사라지게 하는 페이드 아웃 애니메이션 정의 */
+        @keyframes fadeOut {
+            to {
+                opacity: 0;  /* 투명도 0%로 설정 */
+                transform: translateY(-20px);  /* 약간 위로 이동하며 사라짐 */
+            }
+        }
     </style>
 </head>
 
@@ -110,18 +153,22 @@
     <!-- 제목과 설명을 추가 -->
     <header>
         <h1>비속어 차단 채팅방에 오신 것을 환영합니다!</h1>  <!-- 큰 제목 표시 -->
-        <p>(설명 추가 예정)</p>  <!-- 설명 표시 -->
+        <p>(설명 배치 예정)</p>  <!-- 설명 표시 -->
     </header>
-    <!-- 채팅 창 컨테이너 -->
+    
+        <!-- 채팅 창 컨테이너 -->
     <div class="chat-container">
-        <h2>Chat Room</h2>  <!-- 제목 표시 -->
+        <h2 class="chat-title">Chat Room</h2>  <!-- Chat Room 제목을 고정된 위치에 추가 -->
         <!-- 메시지 목록을 표시할 공간 -->
         <ul id="messages"></ul>
         <!-- 채팅 입력 필드 -->
-        <input type="text" id="chatInput" placeholder="Type your message here">  
+        <input type="text" id="chatInput" placeholder="메시지를 입력하세요.">  
         <!-- 메시지 전송 버튼 -->
         <button id="sendButton">Send</button>
     </div>
+
+    
+
 
     <!-- 자바스크립트 코드 시작 -->
     <script>
@@ -136,21 +183,49 @@
         }
 
         /* 새로운 메시지를 추가하는 함수 정의 */
-        function addMessage(user, text) {
+        function addMessage(user, text, isMyMessage) {
             const li = document.createElement('li');  /* 새 메시지 항목 생성 */
             li.textContent = `${user}: ${text}`;  /* 메시지 내용 설정 */
+
+            if (isMyMessage) {
+                li.classList.add('my-message');  /* 내 메시지 스타일 적용 */
+            } else {
+                li.classList.add('other-message');  /* 상대방 메시지 스타일 적용 */
+            }
+
             messages.appendChild(li);  /* 메시지를 목록에 추가 */
             messages.scrollTop = messages.scrollHeight;  /* 스크롤을 맨 아래로 이동 */
+
+            /* 15개 이상의 메시지가 있을 때 오래된 메시지를 삭제 */
+            if (messages.children.length > 7) {
+                messages.children[0].style.animation = "fadeOut 1s forwards";
+                setTimeout(() => {
+                    messages.removeChild(messages.firstChild);
+                }, 1000);  // 1초 후 메시지 삭제
+            }
         }
+
 
         /* 전송 버튼 클릭 시 실행되는 이벤트 핸들러 */
         sendButton.addEventListener('click', () => {
             const message = chatInput.value;  /* 입력 필드의 값을 가져옴 */
             if (message) {  /* 메시지가 비어 있지 않으면 */
-                addMessage(username, message);  /* 메시지를 추가 */
+                addMessage(username, message, true);  /* 내 메시지를 추가 */
                 chatInput.value = '';  /* 입력 필드 초기화 */
+            }
+        });
+
+        /* 입력 필드에서 엔터를 눌렀을 때도 메시지를 전송할 수 있도록 설정 */
+        chatInput.addEventListener('keypress', (e) => {
+            if (e.key === 'Enter') {  /* 엔터 키를 누르면 */
+                sendButton.click();  /* 전송 버튼을 클릭한 것과 동일한 동작 실행 */
             }
         });
     </script>
 </body>
 </html>
+
+<!-- 현재 문제 사항이 있습니다.
+1. 짦은 시간에 많은 채팅이 생길 경우 Chat Room과 설명이 잠시 사라진다는 점
+2. 특히 안드로이드와 아이폰, 그리고 다른 디스플레이 환경에서의 호환성 문제
+3. 이름과 채팅 내용의 구분 힘듦 -->
