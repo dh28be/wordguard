@@ -40,4 +40,4 @@ def gpt(prompt):
     
     return chat_completion.choices[0].message.content
 
-app.run(host="localhost", port=80)
+app.run(host="0.0.0.0", port=80)
