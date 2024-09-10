@@ -87,20 +87,10 @@
             <input class="inputBox" type="text" id="username" name="username" placeholder="Your Name">  <!-- 사용자 이름을 입력하는 텍스트 필드 -->
             <!-- 채팅 방으로 들어가는 버튼 -->
             <button class="button" type="submit" id="enterButton"> Enter Chat </button>
-            <!--<button id="enterButton" onclick="enterChat()">Enter Chat</button>  클릭 시 enterChat 함수 실행하는 버튼 -->
         </form>
     </div>
     <!-- 자바스크립트 코드 시작 -->
     <script>
-        // /* "Enter Chat" 버튼이 클릭되었을 때 실행될 함수 */
-        // // function enterChat() {
-        // //     const username = document.getElementById('username').value;  /* 입력 필드에서 유저 이름 가져오기 */
-        // //     if (username) {  /* 유저 이름이 입력되었는지 확인 */
-        // //         sessionStorage.setItem('username', username);  /* 세션 스토리지에 유저 이름 저장 */
-        // //     } else {
-        // //         alert('Please enter your name.');  /* 유저 이름이 입력되지 않았다면 경고 표시 */
-        // //     }
-        // // }
 
         /* 엔터 키를 눌렀을 때 버튼이 클릭된 것처럼 동작하는 이벤트 리스너 추가 */
         document.getElementById('username').addEventListener('keydown', function(event) {

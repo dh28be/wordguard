@@ -162,15 +162,9 @@
         <!-- 메시지 목록을 표시할 공간 -->
         <ul id="messages_box"></ul>
         <!-- 채팅 입력 필드 -->
-        <!-- <form id="messageForm" method="POST">
-            <input type="text" id="chatInput" placeholder="메시지를 입력하세요.">  
-            <button id="sendButton">Send</button>
-        </form> -->
         <input type="text" id="chatInput" placeholder="메시지를 입력하세요.">  
         <!-- 메시지 전송 버튼 -->
         <button id="sendButton">Send</button>
-        <!-- 메시지 전송 버튼 -->
-        
     </div>
 
     
@@ -189,10 +183,6 @@
 
         socket.on('response', function (data) {
             addMessage(data.username, data.message);
-            // var contentSpan = document.createElement('messages_box');
-            // var content = document.createElement('li');
-            // content.appendChild(document.createTextNode(data.user + " : " + data.message));
-            // contentSpan.appendChild(content);
         });
 
         /* 만약 유저 이름이 없다면, 로그인 페이지로 리디렉션 */
@@ -214,13 +204,13 @@
             messages_box.appendChild(li);  /* 메시지를 목록에 추가 */
             messages_box.scrollTop = messages_box.scrollHeight;  /* 스크롤을 맨 아래로 이동 */
 
-            // /* 15개 이상의 메시지가 있을 때 오래된 메시지를 삭제 */
-            // if (messages_box.children.length > 7) {
-            //     messages_box.children[0].style.animation = "fadeOut 1s forwards";
-            //     setTimeout(() => {
-            //         messages_box.removeChild(messages_box.firstChild);
-            //     }, 1000);  // 1초 후 메시지 삭제
-            // }
+            /* 15개 이상의 메시지가 있을 때 오래된 메시지를 삭제 */
+            if (messages_box.children.length > 7) {
+                messages_box.children[0].style.animation = "fadeOut 1s forwards";
+                setTimeout(() => {
+                    messages_box.removeChild(messages_box.firstChild);
+                }, 1000);  // 1초 후 메시지 삭제
+            }
         }
 
 
@@ -243,8 +233,3 @@
     </script>
 </body>
 </html>
-
-<!-- 현재 문제 사항이 있습니다.
-1. 짦은 시간에 많은 채팅이 생길 경우 Chat Room과 설명이 잠시 사라진다는 점
-2. 특히 안드로이드와 아이폰, 그리고 다른 디스플레이 환경에서의 호환성 문제
-3. 이름과 채팅 내용의 구분 힘듦 -->
