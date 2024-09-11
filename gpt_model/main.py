@@ -23,7 +23,6 @@ def detect():
     
     mode = int(determine_existence(prompt))
 
-    print(mode)
     if mode == 0:
         result = illegal_mask(offensive_mask(prompt))
     elif mode == 1:
@@ -33,7 +32,7 @@ def detect():
     else:
         result = prompt
 
-    return result
+    return str(mode) + result
 
 def determine_existence(prompt):
     client = OpenAI(
@@ -51,7 +50,9 @@ def determine_existence(prompt):
                     "If there exists only illegal websites, output 2."
                     "If there does not exist any of them, output 3."
                     "Detecting offensive words, the most important thing is to consider the context. If it has the same letter but has different meaning, the result has to be different."
-                    "So, consider the context and answer whether it has offensive word or not."
+                    "Make sure to filter out subtle insults or cleverly disguised offensive language used in games like 'ㅇㅁ 없음?'."
+                    "Also treat insults made up of initials as offensive language when the context is quite aggresive. You should always consider the context."
+                    "Meaningless word like 엄 and duplication of it are not a offensive word. "
                     "Detecting illegal websites, consider sites that may involve phishing, online scams, fake marketplaces, illegal downloads, or adult content."
                     "Try using scam advisor when you need it to consider whether it is scam site or not."
                     "Your output must be one of 0~3."
@@ -62,8 +63,8 @@ def determine_existence(prompt):
                 "content": prompt
             }
         ],
-        model="gpt-4",
-        #model="ft:gpt-4o-mini-2024-07-18:personal:chat-filtering:A5vtEEgW",
+        model="gpt-4o-2024-08-06",
+        #model="ft:gpt-4o-mini-2024-07-18:personal:chat-filtering:A64JvdnK",
         max_tokens=500
     )
     
@@ -81,7 +82,10 @@ def offensive_mask(prompt):
                 "content": (
                     "You are an expert assistant that mask offensive words to *** in the sentence."
                     "There are offensive words in the given sentence. Find it and replace it with ***."
+                    "Make sure to filter out subtle insults or cleverly disguised offensive language used in games like 'ㅇㅁ 없음?'."
+                    "Also treat insults made up of initials as offensive language."
                     "If you cannot find any offensive word, just output the original sentence."
+                    "If the whole sentence is insulting, mask the whole sentence."
                     "Do not add anything in the output."
                 )
             },
@@ -115,7 +119,6 @@ def illegal_mask(prompt):
                     "You might use scam advisor to check whether it is scam site or not."
                     "Do not add any other words in the output. When masking the website, you must mask the entire URL"
                     "Response has to be consistent, for the same input."
-                    "Your additional task is to tell me what kind of illegal site it is. Answer this part with Korean."
                 )
             },
             {
@@ -123,8 +126,7 @@ def illegal_mask(prompt):
                 "content": prompt
             }
         ],
-        model="gpt-4",
-        #model="ft:gpt-4o-mini-2024-07-18:personal:chat-filtering:A5vtEEgW",
+        model="gpt-4o-2024-08-06",
         max_tokens=500
     )
     
