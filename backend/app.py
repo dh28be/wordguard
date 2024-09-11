@@ -128,6 +128,8 @@ def determine_existence(prompt):
                     "Make sure to detect subtle insults or cleverly disguised offensive language used in games."
                     "Also treat insults made up of initials as offensive language if it is a well known abbreviation of offensive word."
                     "Meaningless word like 엄 and duplication of it are not a offensive word. "
+                    "Also detect words if they are partial or full translations of well-known offensive words into English."
+                    "Also detect words that are created by typing offensive Korean words using an English keyboard layout. ex) tlqkf"
 
                     "Detecting illegal websites, consider sites that may involve phishing, online scams, fake marketplaces, illegal downloads, or adult content."
                     "Try using scam advisor when you need it to consider whether it is scam site or not."
