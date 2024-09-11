@@ -1,105 +1,141 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="ko">
 <head>
-    <!-- 문서가 UTF-8 인코딩을 사용하도록 설정 -->
     <meta charset="UTF-8">
-    <!-- 화면 크기에 맞추어 적절하게 페이지가 표시되도록 설정 -->
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <!-- 브라우저 탭에 표시될 제목 설정 -->
-    <title>Simple Chat - Dark Mode</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+    <title>WordGuard</title>
 
-    <!-- CSS 스타일을 추가하는 부분 -->
     <style>
-        /* 페이지 전체(body)의 스타일을 설정: 폰트, 레이아웃, 배경색, 텍스트 색상 등 */
         body {
-            font-family: 'Arial', sans-serif;  /* Arial 폰트 사용 */
-            display: flex;  /* 플렉스 박스를 사용해 요소를 정렬 */
-            justify-content: center;  /* 중앙으로 수평 정렬 */
-            align-items: center;  /* 중앙으로 수직 정렬 */
-            height: 100vh;  /* 화면의 100% 높이를 차지 */
-            background-color: #121212;  /* 어두운 배경색 설정 */
-            color: #FFFFFF;  /* 흰색 글자색 설정 */
-            margin: 0;  /* 기본 여백 제거 */
+            font-family: 'Arial', sans-serif;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            background-color: #121212;
+            color: #FFFFFF;
+            margin: 0;
+            background: linear-gradient(-45deg, #000000, #2b2b2b, #202020, #272727);  /* 회색에서 검은색으로 그라데이션 */
+            animation: gradient 15s ease infinite;
+            background-size: 400% 400%;
         }
-        
-        /* 상단 헤더 스타일 */
+
         header {
-            position: absolute;  /* 헤더가 화면의 특정 위치에 고정되도록 설정 */
-            top: 20px;  /* 페이지 상단에서 20px 아래에 위치 */
-            text-align: center;  /* 텍스트를 중앙 정렬 */
+            position: absolute;
+            top: 20px;
+            text-align: center;
         }
 
-        /* 입력 창과 버튼을 감싸는 컨테이너 스타일을 설정 */
         .container {
-            text-align: center;  /* 중앙 정렬 */
-            background-color: #1E1E1E;  /* 어두운 배경색 설정 */
-            padding: 30px;  /* 안쪽 여백 설정 */
-            border-radius: 10px;  /* 모서리를 둥글게 설정 */
-            box-shadow: 0 0 20px rgba(0, 0, 0, 0.5);  /* 그림자 효과 추가 */
-            opacity: 0;  /* 처음에 투명하게 설정 */
-            animation: fadeIn 2s forwards;  /* 2초 동안 서서히 나타나는 애니메이션 적용 */
+            text-align: center;
+            background-color: #1E1E1E;
+            padding: 30px;
+            border-radius: 10px;
+            box-shadow: 0 0 20px rgba(0, 0, 0, 0.5);
+            opacity: 0;
+            animation: fadeIn 2s forwards;
         }
 
-        /* 입력 필드와 버튼의 스타일 설정 */
         input[type="text"], button {
-            padding: 15px;  /* 내부 여백 설정 */
-            margin: 10px 0;  /* 위아래 여백 설정 */
-            width: 80%;  /* 너비를 80%로 설정 */
-            border-radius: 5px;  /* 모서리를 둥글게 설정 */
-            border: 1px solid #333;  /* 어두운 테두리 설정 */
-            background-color: #333;  /* 어두운 배경색 설정 */
-            color: #FFF;  /* 흰색 텍스트 */
+            padding: 15px;
+            margin: 10px 0;
+            width: 80%;
+            border-radius: 5px;
+            border: 1px solid #333;
+            background-color: #333;
+            color: #FFF;
         }
 
-        /* 버튼의 스타일 설정 */
         button {
-            background-color: #FF5722;  /* 버튼 배경색 오렌지로 설정 */
-            cursor: pointer;  /* 버튼 위에 마우스를 올리면 포인터로 변경 */
-            transition: background-color 0.3s ease;  /* 버튼 배경색이 부드럽게 바뀌는 효과 */
+            background-color: #FF5722;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
         }
 
-        /* 버튼을 클릭할 때의 스타일 설정 */
         button:hover {
-            background-color: #E64A19;  /* 버튼 배경색이 더 어두운 오렌지로 변경 */
+            background-color: #E64A19;
         }
 
-        /* 컨테이너가 서서히 나타나는 애니메이션 정의 */
+        .profile-selection img {
+            width: 80px;
+            height: 80px;
+            border-radius: 50%;
+            cursor: pointer;
+            margin: 10px;
+            border: 2px solid transparent;
+            transition: transform 0.3s ease, border-color 0.3s ease, box-shadow 0.3s ease;
+        }
+
+        .profile-selection img.selected {
+            border-color: #FF5722; /* 선택된 이미지의 테두리 강조 */
+            transform: scale(1.1); /* 선택된 이미지의 크기를 10% 확대 */
+            box-shadow: 0 0 15px rgba(255, 87, 34, 0.7); /* 선택된 이미지에 그림자 효과 */
+        }
+
         @keyframes fadeIn {
             to {
-                opacity: 1;  /* 투명도 100%로 변경 */
+                opacity: 1;
+            }
+        }
+        @keyframes gradient{
+            0%{
+                background-position: 0% 50%;
+            }
+            50%{
+                background-position: 100% 50%;
+            }
+            100%{
+                background-position: 0% 50%;
             }
         }
     </style>
 </head>
 
 <body>
-    <!-- 제목과 설명을 추가 -->
     <header>
-        <h1>비속어 차단 채팅방에 오신 것을 환영합니다!</h1>  <!-- 큰 제목 표시 -->
-        <p>본인이 원하는 닉네임을 입력하고 입장하세요.</p>  <!-- 설명 표시 -->
+        <h1>WordGuard</h1>
     </header>
         
-    <!-- 이름을 입력하는 컨테이너 -->
     <div class="container">
         <form action="/login/" method="POST">
-            <h1>Enter your name</h1>  <!-- 이름 입력을 요청하는 제목 표시 -->
-            <!-- 유저 이름을 입력할 필드 -->
-            <input class="inputBox" type="text" id="username" name="username" placeholder="Your Name">  <!-- 사용자 이름을 입력하는 텍스트 필드 -->
-            <!-- 채팅 방으로 들어가는 버튼 -->
-            <button class="button" type="submit" id="enterButton"> Enter Chat </button>
+            <h1>이름을 알려주세요!</h1>
+            <input class="inputBox" type="text" id="username" name="username" placeholder="김덕현" required>
+
+            <h2>프로필 사진을 선택하세요!</h2>
+            <div class="profile-selection">
+                <img src="../static/profile1.jpg" id="profile1" alt="Profile 1" onclick="selectProfile('profile1')">
+                <img src="../static/profile2.jpg" id="profile2" alt="Profile 2" onclick="selectProfile('profile2')">
+                <img src="../static/profile3.jpg" id="profile3" alt="Profile 3" onclick="selectProfile('profile3')">
+                <img src="../static/profile4.jpg" id="profile4" alt="Profile 4" onclick="selectProfile('profile4')">
+                <img src="../static/profile5.jpg" id="profile5" alt="Profile 5" onclick="selectProfile('profile5')">
+            </div>
+
+            <!-- 선택된 프로필 사진의 값을 숨긴 입력 필드로 저장 -->
+            <input type="hidden" id="selectedProfile" name="selectedProfile" value="profile1">
+
+            <button class="button" type="submit" id="enterButton">채팅방 입장</button>
         </form>
     </div>
-    <!-- 자바스크립트 코드 시작 -->
-    <script>
 
-        /* 엔터 키를 눌렀을 때 버튼이 클릭된 것처럼 동작하는 이벤트 리스너 추가 */
+    <script>
+        let selectedProfile = 'profile1'; // 기본 선택된 프로필
+
+        function selectProfile(profileId) {
+            document.getElementById('selectedProfile').value = profileId;
+
+            // 모든 이미지에서 selected 클래스를 제거하고 선택된 이미지에만 추가
+            document.querySelectorAll('.profile-selection img').forEach(img => {
+                img.classList.remove('selected');
+            });
+            document.getElementById(profileId).classList.add('selected');
+        }
+
         document.getElementById('username').addEventListener('keydown', function(event) {
-            if (event.key === 'Enter') {  /* 키보드의 Enter 키가 눌렸을 때 */
-                event.preventDefault();  /* 기본 동작을 막음 */
-                document.getElementById('enterButton').click();  /* Enter 버튼 클릭 동작을 호출 */
+            if (event.key === 'Enter') {
+                event.preventDefault();
+                document.getElementById('enterButton').click();
             }
         });
     </script>
-
 </body>
 </html>
