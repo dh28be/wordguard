@@ -1,12 +1,12 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="ko">
 <head>
     <!-- 문서가 UTF-8 인코딩을 사용하도록 설정 -->
     <meta charset="UTF-8">
     <!-- 화면 크기에 맞추어 적절하게 페이지가 표시되도록 설정 -->
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <!-- 브라우저 탭에 표시될 제목 설정 -->
-    <title>Simple Chat - Dark Mode</title>
+    <title>WordGuard</title>
 
     <!-- CSS 스타일을 추가하는 부분 -->
     <style>
@@ -75,18 +75,17 @@
 <body>
     <!-- 제목과 설명을 추가 -->
     <header>
-        <h1>비속어 차단 채팅방에 오신 것을 환영합니다!</h1>  <!-- 큰 제목 표시 -->
-        <p>본인이 원하는 닉네임을 입력하고 입장하세요.</p>  <!-- 설명 표시 -->
+        <h1>WordGuard</h1>  <!-- 큰 제목 표시 -->
     </header>
         
     <!-- 이름을 입력하는 컨테이너 -->
     <div class="container">
         <form action="/login/" method="POST">
-            <h1>Enter your name</h1>  <!-- 이름 입력을 요청하는 제목 표시 -->
+            <h1>이름을 알려주세요!</h1>  <!-- 이름 입력을 요청하는 제목 표시 -->
             <!-- 유저 이름을 입력할 필드 -->
-            <input class="inputBox" type="text" id="username" name="username" placeholder="Your Name">  <!-- 사용자 이름을 입력하는 텍스트 필드 -->
+            <input class="inputBox" type="text" id="username" name="username" placeholder="김덕현">  <!-- 사용자 이름을 입력하는 텍스트 필드 -->
             <!-- 채팅 방으로 들어가는 버튼 -->
-            <button class="button" type="submit" id="enterButton"> Enter Chat </button>
+            <button class="button" type="submit" id="enterButton">채팅방 입장</button>
         </form>
     </div>
     <!-- 자바스크립트 코드 시작 -->
