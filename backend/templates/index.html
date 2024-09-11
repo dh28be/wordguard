@@ -97,7 +97,7 @@
     </header>
         
     <div class="container">
-        <form action="/login/" method="POST">
+        <form action="/login/" method="POST" onsubmit="return validateForm()">
             <h1>이름을 알려주세요!</h1>
             <input class="inputBox" type="text" id="username" name="username" placeholder="김덕현" required>
 
@@ -111,17 +111,19 @@
             </div>
 
             <!-- 선택된 프로필 사진의 값을 숨긴 입력 필드로 저장 -->
-            <input type="hidden" id="selectedProfile" name="selectedProfile" value="profile1">
+            <input type="hidden" id="selectedProfile" name="selectedProfile" value="">
 
             <button class="button" type="submit" id="enterButton">채팅방 입장</button>
         </form>
     </div>
 
     <script>
-        let selectedProfile = 'profile1'; // 기본 선택된 프로필
+        let selectedProfile = ''; // 기본 선택된 프로필 없음
 
+        // 프로필 선택 함수
         function selectProfile(profileId) {
             document.getElementById('selectedProfile').value = profileId;
+            selectedProfile = profileId; // 선택된 프로필 업데이트
 
             // 모든 이미지에서 selected 클래스를 제거하고 선택된 이미지에만 추가
             document.querySelectorAll('.profile-selection img').forEach(img => {
@@ -130,6 +132,53 @@
             document.getElementById(profileId).classList.add('selected');
         }
 
+        // 실시간으로 입력 길이 제한 함수
+        document.getElementById('username').addEventListener('input', function(event) {
+            const input = event.target.value;
+            const isKorean = /^[가-힣ㄱ-ㅎㅏ-ㅣ]*$/.test(input); // 한글(자모 포함) 체크
+            const isEnglish = /^[a-zA-Z]*$/.test(input); // 영어만 입력했는지 체크
+
+            // 한글이면서 3글자 이상 입력했을 때
+            if (isKorean && input.length > 3) {
+                event.target.value = input.slice(0, 3); // 한글(자모 포함) 3글자 이상 입력 못하도록 제한
+            } 
+            // 영어이면서 5글자 이상 입력했을 때
+            else if (isEnglish && input.length > 5) {
+                event.target.value = input.slice(0, 5); // 영어는 5글자 이상 입력 못하도록 제한
+            } 
+            // 한글 또는 영어가 아닌 경우 문자 제거
+            else if (!isKorean && !isEnglish) {
+                event.target.value = input.replace(/[^a-zA-Z가-힣ㄱ-ㅎㅏ-ㅣ]/g, '');
+            }
+        });
+
+        // 폼 유효성 검사 함수
+        function validateForm() {
+            const username = document.getElementById('username').value.trim();
+            
+            // 이름 유효성 검사
+            if (!validateName(username)) {
+                alert('이름은 한글 3글자 또는 영어 5글자까지만 가능합니다.');
+                return false;
+            }
+
+            // 프로필 선택 여부 확인
+            if (!selectedProfile) {
+                alert('프로필 사진을 선택하세요.');
+                return false;
+            }
+
+            return true; // 모든 조건 통과 시 제출
+        }
+
+        // 이름 유효성 검사 함수 (한글 3글자 또는 영어 5글자)
+        function validateName(name) {
+            const hangulPattern = /^[가-힣ㄱ-ㅎㅏ-ㅣ]{1,3}$/; // 한글 및 자음/모음 1~3글자 허용
+            const englishPattern = /^[a-zA-Z]{1,5}$/; // 영어 1~5글자 패턴
+            return hangulPattern.test(name) || englishPattern.test(name);
+        }
+
+        // Enter 키 이벤트 처리
         document.getElementById('username').addEventListener('keydown', function(event) {
             if (event.key === 'Enter') {
                 event.preventDefault();
