@@ -2,7 +2,7 @@
 <html lang="ko">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
     <title>WordGuard</title>
 
     <style>
@@ -13,9 +13,12 @@
             justify-content: center;
             align-items: center;
             height: 100vh;
-            background-color: #121212;
+            background: linear-gradient(-45deg, #000000, #2b2b2b, #202020, #272727);  /* 회색에서 검은색으로 그라데이션 */
+            animation: gradient 15s ease infinite;
+            background-size: 400% 400%;
             color: #FFFFFF;
             margin: 0;
+            overflow-x: hidden;  /* 좌우 스크롤바 방지 */
         }
 
         header {
@@ -43,7 +46,8 @@
             border-radius: 10px;
             box-shadow: 0 0 20px rgba(0, 0, 0, 0.5);
             overflow-y: hidden;
-            max-height: 70vh;
+            overflow-x: hidden;  /* 좌우 스크롤바 방지 */
+            height: 75vh;  /* 세로 높이를 화면 높이로 고정 */
             position: relative;
             opacity: 0;
             animation: fadeIn 2s forwards;
@@ -55,34 +59,86 @@
             width: 100%;
             display: flex;
             flex-direction: column;
-            max-height: calc(70vh - 100px);
+            height: 100%; /* 메시지 박스 높이 100%로 고정 */
             word-wrap: break-word;
+            overflow-y: auto;
+            overflow-x: hidden;  /* 좌우 스크롤바 방지 */
+        }
+
+        /* 메시지 컨테이너 스타일 */
+        .message-container {
+            display: flex;
+            align-items: flex-end;
+            margin-top: 10px;
+            position: relative;
+        }
+
+        /* 사용자 이름 스타일 */
+        .username {
+            font-size: 0.75rem;
+            color: #CCCCCC;
+            margin-top: 5px;
+            text-align: center;
+            position: absolute;
+            bottom: -20px; /* 이름을 이미지 아래에 배치 */
+            width: 40px; /* 프로필 이미지와 같은 너비 */
+        }
+
+        /* 내 메시지: 오른쪽 정렬 */
+        .my-message {
+            justify-content: flex-end;
+            align-self: flex-end;  /* 메시지 박스를 오른쪽 끝에 배치 */
+            width: 100%;  /* 메시지 박스가 전체 너비를 차지하도록 */
+        }
+
+        .my-message img {
+            margin-left: 10px;
+            margin-right: 0;
+            order: 1;  /* 이미지가 텍스트 뒤에 오도록 순서 변경 */
+        }
+
+        .my-message span {
+            background-color: #FF5722;
+            color: white;
+            padding: 10px;
+            border-radius: 10px;
+            text-align: right;
+            margin-left: auto;
+            max-width: 50%;  /* 메시지 최대 너비 */
+        }
+
+        /* 상대방 메시지: 왼쪽 정렬 */
+        .other-message {
+            justify-content: flex-start;
+            width: 100%;  /* 메시지 박스가 전체 너비를 차지하도록 */
+        }
+
+        .other-message img {
+            margin-right: 10px;
+        }
+
+        .other-message span {
+            background-color: #333;
+            color: white;
+            padding: 10px;
+            border-radius: 10px;
+            text-align: left;
+            margin-right: auto;
+            max-width: 50%;  /* 메시지 최대 너비 */
+        }
+
+        .message-container img {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
         }
 
         #messages_box li {
             padding: 10px;
             margin-top: 5px;
             border-radius: 10px;
-            display: inline-block;
-            width: auto;
-            max-width: 80%;
+            display: flex;
             animation: slideIn 0.5s ease-out;
-        }
-
-        .my-message {
-            background-color: #FF5722;
-            color: white;
-            margin-left: auto;
-            text-align: right;
-            width: auto;
-        }
-
-        .other-message {
-            background-color: #333;
-            color: white;
-            margin-right: auto;
-            text-align: left;
-            width: auto;
         }
 
         .input-container {
@@ -93,34 +149,33 @@
             align-items: center;
         }
 
-        /* textarea에 적용되는 스타일 */
         #chatInput {
             flex: 1;
             padding: 15px 10px;
-            padding-left: 20px; /* placeholder를 약간 오른쪽으로 이동 */
+            padding-left: 20px;
             padding-right: 110px;
-            border-radius: 30px; /* 좌우 끝을 반원 모양으로 둥글게 변경 */
+            border-radius: 30px;
             border: 1px solid #333;
             background-color: #333;
             color: #FFF;
             resize: none;
             overflow: hidden;
-            height: 45px; /* 초기 높이를 placeholder에 맞게 설정 */
+            height: 45px;
             line-height: 1.2;
-            box-sizing: border-box; /* padding과 border를 포함해 height 계산 */
+            box-sizing: border-box;
+            font-family: 'Arial', sans-serif;
         }
 
-        /* 전송 버튼 스타일 (수직 중앙) */
         #sendButton {
             position: absolute;
             right: 10px;
             top: 50%;
-            transform: translateY(-50%); /* 수직 중앙 정렬 */
+            transform: translateY(-50%);
             width: 40px;
             height: 40px;
             border-radius: 30px;
             background-color: #FF5722;
-            color: #000;
+            color: white;
             border: none;
             font-size: 1.5rem;
             font-weight: bold;
@@ -134,17 +189,15 @@
             background-color: #E64A19;
         }
 
-        /* 글자 수 카운터 스타일 */
         .char-counter {
             position: absolute;
-            right: 60px; /* 전송 버튼 왼쪽으로 위치 */
+            right: 60px;
             top: 50%;
-            transform: translateY(-50%); /* 수직 중앙 정렬 */
+            transform: translateY(-50%);
             font-size: 0.8rem;
             color: #FFF;
         }
 
-        /* 에러 메시지 스타일 */
         .error-message {
             color: red;
             font-size: 0.9rem;
@@ -168,6 +221,18 @@
                 opacity: 1;
             }
         }
+
+        @keyframes gradient{
+            0%{
+                background-position: 0% 50%;
+            }
+            50%{
+                background-position: 100% 50%;
+            }
+            100%{
+                background-position: 0% 50%;
+            }
+        }
     </style>
 </head>
 
@@ -180,49 +245,62 @@
         <h2 class="chat-title">채팅방</h2>
         <ul id="messages_box"></ul>
 
-        <!-- 입력창과 전송 버튼을 감싸는 컨테이너 -->
         <div class="input-container">
             <textarea id="chatInput" placeholder="메시지를 입력하세요." maxlength="100"></textarea>
-            <!-- 글자 수 카운터 -->
             <div class="char-counter" id="charCounter">0/100</div>
-            <!-- 전송 버튼 -->
             <button id="sendButton">></button>
         </div>
         
-        <!-- 에러 메시지 표시 영역 -->
         <div class="error-message" id="errorMessage">메시지는 100자 이하로 입력해 주세요.</div>
     </div>
 
     <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/4.1.3/socket.io.js"></script>
 
     <script>
-        var socket = io.connect('127.0.0.1:80');
+        var socket = io.connect('https://' + document.domain + ':' + location.port);
 
         const messages_box = document.getElementById('messages_box');
         const chatInput = document.getElementById('chatInput');
         const sendButton = document.getElementById('sendButton');
         const errorMessage = document.getElementById('errorMessage');
         const charCounter = document.getElementById('charCounter');
-        const username = "{{user.username}}";
+        const username = "{{ user.username }}";
+        const profileImage = "../static/{{ user.profile_image }}.jpg";  // 사용자 프로필 이미지 경로
 
         socket.on('response', function (data) {
-            addMessage(data.username, data.message);
+            addMessage(data.username, data.message, data.profile_image);
         });
 
         if (!username) {
             window.location.href = 'index.html';
         }
 
-        function addMessage(user, text) {
+        function addMessage(user, text, profileImage) {
             const li = document.createElement('li');
-            li.textContent = `${user}: ${text}`;
+            const messageContainer = document.createElement('div');
+            messageContainer.classList.add('message-container');
+
+            const img = document.createElement('img');
+            img.src = `../static/${profileImage}.jpg`;  // 프로필 이미지 설정
+            messageContainer.appendChild(img);
+
+            const span = document.createElement('span');
+            span.textContent = `${text}`;  // 메시지만 표시
+            messageContainer.appendChild(span);
+
+            // 사용자 이름을 프로필 사진 아래에 표시
+            const usernameDiv = document.createElement('div');
+            usernameDiv.classList.add('username');
+            usernameDiv.textContent = user;
+            messageContainer.appendChild(usernameDiv);
 
             if (user == username) {
-                li.classList.add('my-message');
+                messageContainer.classList.add('my-message');
             } else {
-                li.classList.add('other-message');
+                messageContainer.classList.add('other-message');
             }
 
+            li.appendChild(messageContainer);
             messages_box.appendChild(li);
             messages_box.scrollTop = messages_box.scrollHeight;
         }
@@ -231,45 +309,42 @@
             const message = chatInput.value;
 
             if (message.trim().length > 100) {
-                // 에러 메시지를 표시
                 errorMessage.style.display = 'block';
                 return;
             }
 
-            // 에러 메시지를 숨김
             errorMessage.style.display = 'none';
 
             if (message.trim()) {
-                socket.emit('message', {'user': username, 'message' : message});
+                socket.emit('message', {
+                    'user': username, 
+                    'message': message, 
+                    'profile_image': "{{ user.profile_image }}"  // 프로필 이미지 전송
+                });
             }
             chatInput.value = '';
             updateCharCount();
-            adjustTextareaHeight(); // 전송 후 입력창 크기 초기화
+            adjustTextareaHeight();
         });
 
         chatInput.addEventListener('keypress', (e) => {
             if (e.key === 'Enter') {
                 sendButton.click();
-                e.preventDefault(); // 엔터 입력 시 줄바꿈 방지
+                e.preventDefault();
             }
         });
 
-        /* 입력창 크기를 동적으로 조정하는 함수 */
         function adjustTextareaHeight() {
             chatInput.style.height = 'auto';
-            chatInput.style.height = (chatInput.scrollHeight - 5) + 'px'; // 높이 조절
+            chatInput.style.height = (chatInput.scrollHeight - 5) + 'px';
         }
 
-        /* 글자 수 업데이트 함수 */
         function updateCharCount() {
             const currentLength = chatInput.value.length;
             charCounter.textContent = `${currentLength}/100`;
-
-            // 입력할 때마다 높이 조정
             adjustTextareaHeight();
         }
 
-        /* 입력할 때마다 글자 수와 높이를 조정 */
         chatInput.addEventListener('input', updateCharCount);
     </script>
 </body>
