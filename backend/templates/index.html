@@ -148,8 +148,8 @@
             const username = document.getElementById('username').value;
             const profile = selectedProfile;
 
-            if (username.length !== 3) {
-                alert("이름은 정확히 3글자여야 합니다.");
+            if (username.length > 3) {
+                alert("이름은 3글자 이하여야 합니다.");
                 event.preventDefault(); // 폼 제출 중지
                 return;
             }
